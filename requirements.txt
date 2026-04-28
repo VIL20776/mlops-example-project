@@ -1,0 +1,6 @@
+torch
+pillow
+numpy
+pyyaml
+mlflow
+boto3

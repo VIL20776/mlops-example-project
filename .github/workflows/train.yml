@@ -1,0 +1,38 @@
+name: Train on EC2
+
+on:
+  workflow_run:
+    workflows: ["Build and Push to ECR"]
+    types:
+      - completed
+
+env:
+  ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
+  REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.ACCOUNT_ID }}:role/github-actions-role
+          aws-region: ${{ secrets.AWS_REGION }} 
+
+      - name: Train via SSM
+        run: |
+          aws ssm send-command \
+            --instance-ids ${{ secrets.INSTANCE_ID }} \
+            --document-name "AWS-RunShellScript" \
+            --parameters commands='[
+              "docker pull ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}",
+              "docker run -d -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} --name app ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}"
+            ]' \
+            --comment "Run training container" \
+            --output text
