@@ -29,23 +29,24 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to ECR
+        id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
-          images: ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}
+          images: ${{ steps.ecr-login.outputs.registry }}/${{ env.REPOSITORY_NAME }}
           tags: |
-            type=sha,prefix=sha-
+            type=sha,prefix=
             type=ref,event=branch
-            type=ref,event=tag
+            type=semver,pattern={{version}}
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
       
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
