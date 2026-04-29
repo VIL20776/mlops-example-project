@@ -1,3 +1,5 @@
+from mlflow.pyfunc import ENV
+
 from utils import CatsAndDogsDataset, SimpleClassifier, train_model, test_model
 from torch.utils.data import DataLoader
 from loader import load_data_from_s3
@@ -18,7 +20,7 @@ if __name__ == "__main__":
     output_size = 2  # 2 classes: cat and dog
     epochs = 5
 
-    # mlflow.set_tracking_uri("http://18.220.122.33:5000")  # Set the tracking URI for MLflow
+    mlflow.set_tracking_uri(os.getenv("MLFLOW_TRACKING_URI"))  # Set the tracking URI for MLflow
     mlflow.set_experiment("Cats and Dogs Classification")
     
     # Download data from S3 (if needed)
