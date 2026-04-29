@@ -1,7 +1,8 @@
 from utils import CatsAndDogsDataset, SimpleClassifier, train_model, test_model
 from torch.utils.data import DataLoader
+from loader import load_data_from_s3
 
-
+import os
 import mlflow
 import mlflow.pytorch
 import torch
@@ -10,6 +11,8 @@ import torch.optim as optim
 
 if __name__ == "__main__":
     data_dir = 'data'
+    data_bucket_name = 'ml-data-storage-s3-bucket-12345'
+    data_prefix = 'cats-and-dogs-image-classification/'
     input_size = 64 * 64 * 3  
     hidden_size = 125
     output_size = 2  # 2 classes: cat and dog
@@ -17,6 +20,11 @@ if __name__ == "__main__":
 
     # mlflow.set_tracking_uri("http://18.220.122.33:5000")  # Set the tracking URI for MLflow
     mlflow.set_experiment("Cats and Dogs Classification")
+    
+    # Download data from S3 (if needed)
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+        load_data_from_s3(bucket_name=data_bucket_name, prefix=data_prefix, local_path=data_dir)
     
     with mlflow.start_run():
         model = SimpleClassifier(input_size, hidden_size, output_size)

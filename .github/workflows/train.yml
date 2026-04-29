@@ -31,11 +31,10 @@ jobs:
             --instance-ids ${{ secrets.INSTANCE_ID }} \
             --document-name "AWS-RunShellScript" \
             --parameters commands='[
-              "mkdir -p /app/data",
-              "aws s3 cp ${{ secrets.S3_BUCKET }} /app/data --recursive",
               "docker pull ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}",
               "docker run -d \
                 -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} \
+                --network host \
                 --name app \
                 ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}"
             ]' \

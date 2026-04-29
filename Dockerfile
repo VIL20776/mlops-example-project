@@ -19,11 +19,7 @@ ENV PATH="/app/venv/bin:$PATH"
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Create directories for data and models
-RUN mkdir -p /app/data
-
-# Copy the training script and utility functions into the container
-COPY utils.py .
-COPY train.py .
+# Copy the training script and any other necessary files
+COPY *.py .
 
 ENTRYPOINT ["python", "train.py"]
