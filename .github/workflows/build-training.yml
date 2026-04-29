@@ -25,14 +25,13 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to ECR
-        id: ecr-login
         uses: aws-actions/amazon-ecr-login@v2
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.ecr-login.outputs.registry }}/${{ secrets.PROJECT_ID }}
+          images: ${{ secrets.ECR_REPOSITORY_URL }}
           tags: |
             type=sha,prefix=
             type=raw,value=latest,enable=true
