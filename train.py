@@ -15,7 +15,7 @@ if __name__ == "__main__":
     output_size = 2  # 2 classes: cat and dog
     epochs = 5
 
-    mlflow.set_tracking_uri("http://18.220.122.33:5000")  # Set the tracking URI for MLflow
+    # mlflow.set_tracking_uri("http://18.220.122.33:5000")  # Set the tracking URI for MLflow
     mlflow.set_experiment("Cats and Dogs Classification")
     
     with mlflow.start_run():
@@ -41,5 +41,3 @@ if __name__ == "__main__":
 
         mlflow.log_metric("accuracy", asset_accuracy)  # Log accuracy to MLflow
         mlflow.pytorch.log_model(model, "simple_classifier")  # Log the model to MLflow
-
-        torch.save(model.state_dict(), 'models/simple_classifier.pth')
