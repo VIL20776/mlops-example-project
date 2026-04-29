@@ -45,6 +45,9 @@ jobs:
           
           if [ "$status" != "Success" ]; then
             echo "SSM command failed with status: $status"
+            echo "Standard Output:"
+            aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'StandardOutputContent' --output text
+            echo "Standard Error:"
             aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'StandardErrorContent' --output text
             exit 1
           fi
