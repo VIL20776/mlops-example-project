@@ -11,10 +11,6 @@ jobs:
       id-token: write
       contents: read
 
-    env:
-      REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
-      ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.ecr-login.outputs.registry }}/${{ env.REPOSITORY_NAME }}
+          images: ${{ steps.ecr-login.outputs.registry }}/${{ env.PROJECT_ID }}
           tags: |
             type=sha,prefix=
             type=ref,event=branch

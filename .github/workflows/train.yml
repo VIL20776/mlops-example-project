@@ -1,14 +1,7 @@
 name: Train on EC2
 
 on:
-  workflow_run:
-    workflows: ["Build and Push to ECR"]
-    types:
-      - completed
-
-env:
-  ECR_REPOSITORY_URL: ${{ secrets.ECR_REPOSITORY_URL }}
-  REPOSITORY_NAME: ${{ secrets.REPOSITORY_NAME }}
+  workflow_dispatch
 
 jobs:
   deploy:
@@ -31,12 +24,12 @@ jobs:
             --instance-ids ${{ secrets.INSTANCE_ID }} \
             --document-name "AWS-RunShellScript" \
             --parameters commands='[
-              "docker pull ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}",
+              "docker pull ${{ secrets.ECR_REPOSITORY_URL }}/${{ env.PROJECT_ID }}:latest",
               "docker run -d \
                 -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} \
                 --network host \
                 --name app \
-                ${{ env.ECR_REPOSITORY_URL }}/${{ env.REPOSITORY_NAME }}:${{ github.sha }}"
+                ${{ secrets.ECR_REPOSITORY_URL }}/${{ env.PROJECT_ID }}:latest"
             ]' \
             --comment "Run training container" \
             --output text
