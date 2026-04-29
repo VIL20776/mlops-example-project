@@ -34,9 +34,12 @@ jobs:
           
           echo "Command ID: $command_id"
 
-          aws ssm wait command-executed --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }}
-          
           status=$(aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'Status' --output text)
+          while [[ "$status" == "InProgress" || "$status" == "Pending" ]]; do
+            echo "Command is still running... Status: $status"
+            sleep 10
+            status=$(aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'Status' --output text)
+          done
           
           if [ "$status" != "Success" ]; then
             echo "SSM command failed with status: $status"
