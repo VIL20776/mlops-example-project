@@ -25,8 +25,8 @@ jobs:
             --document-name "AWS-RunShellScript" \
             --parameters commands='[
               "aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URL }}",
-              "docker pull ${{ secrets.ECR_REPOSITORY_URL }}:${{ github.sha }}",
-              "docker run -d -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} --network host --name app ${{ secrets.ECR_REPOSITORY_URL }}:${{ github.sha }}"
+              "docker pull ${{ secrets.ECR_REPOSITORY_URL }}:latest",
+              "docker run -d -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} --network host --name app ${{ secrets.ECR_REPOSITORY_URL }}:latest"
             ]' \
             --comment "Run training container" \
             --query 'Command.CommandId' \
