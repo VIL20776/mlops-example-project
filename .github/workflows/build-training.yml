@@ -32,7 +32,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ steps.ecr-login.outputs.registry }}/${{ env.PROJECT_ID }}
+          images: ${{ steps.ecr-login.outputs.registry }}/${{ secrets.PROJECT_ID }}
           tags: |
             type=sha,prefix=
             type=ref,event=branch
