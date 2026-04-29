@@ -34,7 +34,7 @@ jobs:
           
           echo "Command ID: $command_id"
 
-          sleep 30  # Wait for the command to execute
+          aws ssm wait command-executed --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }}
           
           status=$(aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'Status' --output text)
           
