@@ -1,0 +1,20 @@
+name: Deploy to S3 Model Registry
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Deploy model to S3
+        run: |
+          mlflow artifacts download-artifacts -u "model:/simple_classifier/stable" -d ./model
+          aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/release/simple_classifier/ --recursive

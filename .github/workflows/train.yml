@@ -4,7 +4,7 @@ on:
   workflow_dispatch
 
 jobs:
-  deploy:
+  train:
     runs-on: ubuntu-latest
 
     permissions:
@@ -26,7 +26,7 @@ jobs:
             --parameters commands='[
               "aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URL }}",
               "docker pull ${{ secrets.ECR_REPOSITORY_URL }}:latest",
-              "docker run --rm -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} --network host --name app ${{ secrets.ECR_REPOSITORY_URL }}:latest"
+              "docker run --rm -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} -e DATA_BUCKET_NAME=${{ secrets.DATA_BUCKET_NAME }} --network host --name app ${{ secrets.ECR_REPOSITORY_URL }}:latest"
             ]' \
             --comment "Run training container" \
             --query 'Command.CommandId' \
