@@ -1,6 +1,15 @@
 name: Deploy to S3 Model Registry
 on:
   workflow_dispatch:
+    inputs:
+      model_name:
+        description: 'Name of the model to deploy'
+        required: true
+        default: 'simple_classifier'
+      model_version:
+        description: 'Model version to deploy'
+        required: false
+        default: 'release'
 
 jobs:
   deploy:
@@ -16,5 +25,5 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Deploy model to S3
         run: |
-          mlflow artifacts download-artifacts -u "model:/simple_classifier/stable" -d ./model
-          aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/release/simple_classifier/ --recursive
+          MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} MODEL_VERSION=${{ github.event.inputs.model_version }} python deploy.py
+          aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/release/${{ github.event.inputs.model_name }} --recursive
