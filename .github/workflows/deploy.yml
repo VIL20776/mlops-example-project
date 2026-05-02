@@ -23,6 +23,13 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
+      
+      - name: Install dependencies
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --no-cache-dir -r requirements.txt
+
       - name: Deploy model to S3
         run: |
           MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} MODEL_VERSION=${{ github.event.inputs.model_version }} python deploy.py
