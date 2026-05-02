@@ -34,9 +34,7 @@ jobs:
       
       - name: Install dependencies
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          pip install --no-cache-dir mlflow boto3
+          pip install --no-cache-dir -r requirements.txt
 
       - name: Deploy model to S3
         run: |
