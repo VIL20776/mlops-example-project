@@ -20,7 +20,7 @@ if __name__ == "__main__":
     epochs = 5
 
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)  # Set the tracking URI for MLflow
-    mlflow.set_experiment("Cats and Dogs Classification")
+    mlflow.set_experiment("vil20776-torch-mlops-example-project")
     
     # Download data from S3 (if needed)
     if not os.path.exists(data_dir):
