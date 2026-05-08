@@ -24,7 +24,7 @@ jobs:
             --function-name ${{ secrets.AWS_LAMBDA_FUNCTION_NAME }} \
             --payload '{
               "ecr_repository": "${{ secrets.ECR_REPOSITORY }}",
-              "project_name": "${{ secrets.PROJECT_NAME }}",
+              "project_id": "${{ secrets.PROJECT_ID }}",
             }' \
             response.json
           cat response.json

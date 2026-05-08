@@ -17,7 +17,7 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Checkout code
@@ -35,4 +35,4 @@ jobs:
       - name: Deploy model to S3
         run: |
           MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} MODEL_VERSION=${{ github.event.inputs.model_version }} python deploy.py
-          aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/${{ secrets.PROJECT_NAME }}/${{ github.event.inputs.model_version }} --recursive
+          aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/${{ secrets.PROJECT_ID }}/${{ github.event.inputs.model_version }} --recursive
