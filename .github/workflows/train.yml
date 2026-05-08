@@ -18,34 +18,13 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Train via SSM
+      - name: Train via Lambda
         run: |
-          command_id=$(aws ssm send-command \
-            --instance-ids ${{ secrets.INSTANCE_ID }} \
-            --document-name "AWS-RunShellScript" \
-            --parameters commands='[
-              "aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URL }}",
-              "docker pull ${{ secrets.ECR_REPOSITORY_URL }}:latest",
-              "docker run --rm -e MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} -e DATA_BUCKET_NAME=${{ secrets.DATA_BUCKET_NAME }} --network host --name app ${{ secrets.ECR_REPOSITORY_URL }}:latest"
-            ]' \
-            --comment "Run training container" \
-            --query 'Command.CommandId' \
-            --output text)
-          
-          echo "Command ID: $command_id"
-
-          status=$(aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'Status' --output text)
-          while [[ "$status" == "InProgress" || "$status" == "Pending" ]]; do
-            echo "Command is still running... Status: $status"
-            sleep 10
-            status=$(aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'Status' --output text)
-          done
-          
-          if [ "$status" != "Success" ]; then
-            echo "SSM command failed with status: $status"
-            echo "Standard Output:"
-            aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'StandardOutputContent' --output text
-            echo "Standard Error:"
-            aws ssm get-command-invocation --command-id $command_id --instance-id ${{ secrets.INSTANCE_ID }} --query 'StandardErrorContent' --output text
-            exit 1
-          fi
+          aws lambda invoke \
+            --function-name ${{ secrets.AWS_LAMBDA_FUNCTION_NAME }} \
+            --payload '{
+              "ecr_repository": "${{ secrets.ECR_REPOSITORY }}",
+              "project_name": "${{ secrets.PROJECT_NAME }}",
+            }' \
+            response.json
+          cat response.json
