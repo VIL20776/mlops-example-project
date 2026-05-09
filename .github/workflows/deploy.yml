@@ -34,5 +34,9 @@ jobs:
 
       - name: Deploy model to S3
         run: |
-          MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} MODEL_VERSION=${{ github.event.inputs.model_version }} python deploy.py
+          MLFLOW_TRACKING_URI=${{ secrets.MLFLOW_TRACKING_URI }} \
+          MODEL_NAME=${{ secrets.PROJECT_ID }} \
+          MODEL_VERSION=${{ github.event.inputs.model_version }} \
+          python deploy.py
+          
           aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/${{ secrets.PROJECT_ID }}/${{ github.event.inputs.model_version }} --recursive
