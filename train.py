@@ -1,4 +1,4 @@
-from utils import CatsAndDogsDataset, SimpleClassifier, train_model, test_model
+from core import CatsAndDogsDataset, SimpleClassifier, train_model, test_model
 from torch.utils.data import DataLoader
 from loader import load_data_from_s3
 
