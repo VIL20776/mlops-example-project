@@ -1,4 +1,6 @@
 FROM ubuntu:24.04
+# If using CUDA, use the appropriate base image
+# FROM nvidia/cuda:13.1.2-cudnn-devel-ubuntu24.04
 
 # Install necessary packages
 RUN apt update && apt install -y \
@@ -22,4 +24,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the training script and any other necessary files
 COPY *.py .
 
-ENTRYPOINT ["python", "train.py"]
+# Run the data loader script
+RUN python loader.py
+
+CMD ["python", "train.py"]
