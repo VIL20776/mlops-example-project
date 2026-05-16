@@ -1,6 +1,6 @@
 from core import CatsAndDogsDataset, SimpleClassifier, train_model, test_model
 from torch.utils.data import DataLoader
-from loader import load_data_from_s3
+from loader import DATA_BUCKET_NAME, load_data_from_s3
 
 import os
 import mlflow
@@ -11,14 +11,24 @@ import torch.optim as optim
 if __name__ == "__main__":
     
     data_dir = 'data'
+    data_prefix = 'cats-and-dogs-image-classification/'
     input_size = 64 * 64 * 3  
     hidden_size = 125
     output_size = 2  # 2 classes: cat and dog
     epochs = 10
 
+    if not DATA_BUCKET_NAME:
+        raise ValueError("DATA_BUCKET_NAME environment variable is not set. Please set it to the name of your S3 bucket containing the data.")
+
+    # Download data from S3 (if needed)
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+        load_data_from_s3(bucket_name=DATA_BUCKET_NAME, prefix=data_prefix, local_path=data_dir)
+    else:
+        print(f"Data directory '{data_dir}' already exists. Skipping download.")
+
     mlflow.set_experiment("vil20776-torch-mlops-example-project")
-    
-        
+           
     with mlflow.start_run():
         model = SimpleClassifier(input_size, hidden_size, output_size)
         optimizer = optim.SGD(model.parameters(), lr=0.01)

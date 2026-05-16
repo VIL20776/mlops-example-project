@@ -12,11 +12,12 @@ Recuerda incluir estos archivos al Dockerfile.
 * **Código de entrenamiento/experimentación (train.py)**: 
 Código fuente definiendo la configuración, parametrización y datos a usar para el entrenamiento del modelo 
 desarrollado. Puede definir multiples configuraciones para realizar pruebas y usar multiples archivos, pero 
-recurda agregarlo todo al Dockerfile y definir un punto de entrada. Más información en la sección de 
-[Integración con MLFlow](./docs/MLFLOW.md).
+recurda agregarlo todo al Dockerfile y definir un punto de entrada.
+Más información en la sección de [Integración con MLFlow](./docs/MLFLOW.md).
+Nota: Usa la API de boto3 para descargar los archivos necesarios, como se muestra en el programa de ejemplo.
 * **Script/Programa de carga de datos (loader.py):**
 Define los datos de entrenamiento a usar la bucket de datos de la infraestructura. Puede ser un script 
-independiente o ser integrado al programa de entrenamiento. Usa la variable de entorno `DATA_BUCKET_NAME` 
+independiente, pero es recomendable integrarlo al código de entrenamiento. Usa la variable de entorno `DATA_BUCKET_NAME` 
 para referirte a la bucket dentro del script/programa.<br>
 Toma en cuenta que las maquinas virtuales usadas para el entrenamiento de los modelos no tienen acceso a 
 internet. Por lo que si necesitas de un dataset particular que no se encuentre disponible en la infraestructura. 

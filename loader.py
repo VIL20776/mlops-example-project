@@ -17,16 +17,16 @@ def load_data_from_s3(bucket_name, prefix, local_path):
             s3.download_file(bucket_name, key, local_file_path)
             print(f"Downloaded {key} to {local_file_path}")
 
-if __name__ == "__main__":
-    data_dir = 'data'
-    data_prefix = 'cats-and-dogs-image-classification/'
+# if __name__ == "__main__":
+#     data_dir = 'data'
+#     data_prefix = 'cats-and-dogs-image-classification/'
 
-    if not DATA_BUCKET_NAME:
-        raise ValueError("DATA_BUCKET_NAME environment variable is not set. Please set it to the name of your S3 bucket containing the data.")
+#     if not DATA_BUCKET_NAME:
+#         raise ValueError("DATA_BUCKET_NAME environment variable is not set. Please set it to the name of your S3 bucket containing the data.")
 
-    # Download data from S3 (if needed)
-    if not os.path.exists(data_dir):
-        os.makedirs(data_dir)
-        load_data_from_s3(bucket_name=DATA_BUCKET_NAME, prefix=data_prefix, local_path=data_dir)
-    else:
-        print(f"Data directory '{data_dir}' already exists. Skipping download.")
+#     # Download data from S3 (if needed)
+#     if not os.path.exists(data_dir):
+#         os.makedirs(data_dir)
+#         load_data_from_s3(bucket_name=DATA_BUCKET_NAME, prefix=data_prefix, local_path=data_dir)
+#     else:
+#         print(f"Data directory '{data_dir}' already exists. Skipping download.")
