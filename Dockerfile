@@ -24,7 +24,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the training script and any other necessary files
 COPY *.py .
 
-# Run the data loader script
-RUN python loader.py
-
-CMD ["python", "train.py"]
+CMD ["bash", "-c", "python loader.py && python train.py"]
