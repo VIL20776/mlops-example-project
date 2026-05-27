@@ -17,6 +17,10 @@ if __name__ == "__main__":
     output_size = 2  # 2 classes: cat and dog
     epochs = 10
 
+    experiment_name = os.getenv("MLFLOW_EXPERIMENT_NAME")
+    if not experiment_name:
+        raise ValueError("MLFLOW_EXPERIMENT_NAME environment variable is not set. Please set it to the name of your MLflow experiment.")
+
     if not DATA_BUCKET_NAME:
         raise ValueError("DATA_BUCKET_NAME environment variable is not set. Please set it to the name of your S3 bucket containing the data.")
 
@@ -27,7 +31,7 @@ if __name__ == "__main__":
     else:
         print(f"Data directory '{data_dir}' already exists. Skipping download.")
 
-    mlflow.set_experiment("vil20776-torch-mlops-example-project")
+    mlflow.set_experiment(experiment_name)
            
     with mlflow.start_run():
         model = SimpleClassifier(input_size, hidden_size, output_size)
