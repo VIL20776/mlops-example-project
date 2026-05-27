@@ -1,4 +1,24 @@
-# Flujo de trabajo
+## Github Actions
+En el proyecto se definen 3 workflows para el proceso de CI/CD.
+
++ **Build and Push to ECR (build-taining.yml):** Se encarga de construir la imagen de entrenamiento y subirla a la infraestructura.
++ **Train on EC2 (train.yml):** Se encarga de invocar crear la maquina virtual donde se entrenará el modelo.
++ **Deploy to S3 Model Registry (deploy.yml):** Se encarga de subir el modelo registrado en MLFlow al servidor de modelos. 
+Este workflow hace uso del script deploy/download_model.py y deploy/requirements.txt.
+
+Para el correcto funcionamiento de los workflows, es necesario definir los siguientes secretos en el repositorio del proyecto:
+
++ **PROJECT_ID:** Identificación del projecto dentro de la infraestructura. Lleva la estructura de 
+{Usuario/Organización}-{LibreríaML}-{NombreDelRepositorio}.
++ **AWS_ACCOUNT_ID:** ID de la cuenta de AWS.
++ **AWS_REGION:** Región de la cuenta de AWS.
++ **AWS_ROLE_TO_ASSUME:** Nombre del rol IAM para Github Actions.
++ **AWS_LAMBDA_FUNCTION_NAME:** Nombre de la función lambda a invocar para el entrenamiento del modelo.
++ **MLFLOW_TRACKING_URI:** URI del servidor de MLFlow en la forma de
+http://\<Public_IP\>:\<Port\>.
++ **MODEL_S3_BUCKET:** Nombre de la bucket de registro de modelos.
+
+## Flujo de trabajo
 A continuación se describe en rasgos generales el flujo de trabajo que deberían seguir los investigadores que hagan uso de la infraestructura.
 1. Desarrolle el modelo integrando MLFlow para llevar seguimiento de resultados.
 2. Una vez creado el modelo, construya la imagen de Docker para el entrenamiento. Esta imagen debería poder ejecutar el entrenamiento del modelo de forma reproducible.
