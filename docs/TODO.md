@@ -1,0 +1,3 @@
+# Posibles mejoras y recomendaciones
+- [ ] **Soporte para otras librerías:** El script deploy/download_model.py solo descarga modelos de torch. Sería ideal un sistema para poder definir otras librerías sin solicitarle al usuario que modifique el script.
+- [ ] **Pruebas con otros lenguajes:** MLFlow no es una plataforma exclusiva de Python y proveen APIs para Typescript, R y Java. Si alguno de estos lenguajes es deseable, sería buena idea crear nuevos proyectos de ejemplo que sirvan como base.

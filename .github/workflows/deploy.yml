@@ -38,5 +38,9 @@ jobs:
           MODEL_NAME=${{ secrets.PROJECT_ID }} \
           MODEL_VERSION=${{ github.event.inputs.model_version }} \
           python deploy/download_model.py
+
+          if [[ -f ./deploy/README.txt ]]; then
+            cp ./deploy/README.txt ./model/README.txt
+          fi
           
           aws s3 cp ./model s3://${{ secrets.MODEL_S3_BUCKET }}/${{ secrets.PROJECT_ID }}/${{ github.event.inputs.model_version }} --recursive

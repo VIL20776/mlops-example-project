@@ -44,4 +44,5 @@ Los aliases son únicos para cada versión, por lo que al usar un alias ya exist
 10. Ya registrado el modelo, vuelva al repositorio de Github, dirijase a la pestaña Actions y ejecute el workflow "Deploy to S3 Model Registry". Este pedirá que ingrese el alias de la versión que desea subir.
 ![Ventana de Runs](./imgs/github_deploy.png)
 Una vez hecho esto, los archivos del modelo estaran disponibles en la API de despliegue en la siguiente ruta:<br>
-`http://ip_servidor_de_despliegue:8000/id_del_projecto/version`
+`http://ip_servidor_de_despliegue:8000/id_del_projecto/version`<br>
+NOTA: Puede incluir un README.txt que se incluya con el modelo agregandolo en la carpeta deploy.
