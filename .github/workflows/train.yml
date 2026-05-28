@@ -1,4 +1,4 @@
-name: Train on EC2
+name: 02-Train on EC2
 
 on:
   workflow_dispatch

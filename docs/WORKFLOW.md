@@ -19,7 +19,7 @@ http://\<Public_IP\>:\<Port\>.
 + **MODEL_S3_BUCKET:** Nombre de la bucket de registro de modelos.
 
 ## Flujo de trabajo
-A continuación se describe en rasgos generales el flujo de trabajo que deberían seguir los investigadores que hagan uso de la infraestructura.
+A continuación se describe el flujo de trabajo que deberían seguir los investigadores que hagan uso de la infraestructura.
 1. Desarrolle el modelo integrando MLFlow para llevar seguimiento de resultados.
 2. Una vez creado el modelo, construya la imagen de Docker para el entrenamiento. Esta imagen debería poder ejecutar el entrenamiento del modelo de forma reproducible.
 3. En el repositorio de Github, dirijase a la pestaña Actions y ejecute el workflow "Build and Push to ECR" para subir la imagen a la infraestructura.

@@ -1,4 +1,4 @@
-name: Deploy to S3 Model Registry
+name: 03-Deploy to S3 Model Registry
 on:
   workflow_dispatch:
     inputs:

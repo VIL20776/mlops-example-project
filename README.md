@@ -34,3 +34,6 @@ Define la descarga del modelo desde el registro de MLFlow. De ser necesario, mod
 requirements.txt para que pueda descargar el modelo correctamente.
 Vea la sección de [Github Actions](#github-actions).
 
+## Documentación
++ [**MLFlow.md:**](./docs/MLFLOW.md) Aquí se da una breve introducción a MLFlow y un ejemplo de su uso.
++ [**WORKFLOW.md:**](./docs/WORKFLOW.md) Aquí se explican los workflows disponibles, secrets a definir y el flujo de trabajo a seguir para hacer uso de la infraestructura.

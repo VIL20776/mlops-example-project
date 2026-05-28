@@ -30,7 +30,7 @@ with mlflow.start_run():
     # Finalmente guarde el modelo en MLFlow usando:
     # mlflow.<LibreríaML>.log_model(model)
 ```
-Para más detalles, consulte los siguientes recursos de MLFlow:
+Para más detalles en el uso de MLFlow, consulte los siguientes recursos de oficiales:
 + [MLFlow Tracking](https://mlflow.org/docs/latest/ml/tracking/)
 + [MLFlow Tracking APIs](https://mlflow.org/docs/latest/ml/tracking/tracking-api/)
 + [MLFlow Models](https://mlflow.org/docs/latest/ml/model/)
